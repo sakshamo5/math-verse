@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gauss Inverse Matrix Calculator</title>
+    <style>
+       body {
+    font-family: 'Georgia', serif;
+    background-color: #eef2f7;
+    background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px; /* Controls grid spacing */
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        nav {
+            background-color: #476a6b;
+            color: white;
+            padding: 10px 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        nav a {
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: capitalize;
+            border-radius: 25px;
+            transition: background-color 0.3s, transform 0.3s;
+            margin: 0 40px;
+        }
+
+        nav a:hover {
+            background-color: #f39c12;
+            transform: scale(1.1);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .container:hover {
+            transform: scale(1.03);
+        }
+
+        p{
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+            color: #1d3557;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        button {
+            background-color: #1d3557;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #457b9d;
+        }
+
+        .matrix-output {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .matrix-cell {
+            background: #a8dadc;
+            padding: 12px;
+            border-radius: 5px;
+            text-align: center;
+            min-width: 50px;
+            font-weight: bold;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-section {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f1faee;
+            border-radius: 10px;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+
+        .math-symbols {
+            text-align: center;
+            font-size: 24px;
+            color: #e63946;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html"><i class="fas fa-calculator"></i> Mathematicians</a>
+        <a href="ml.html"><i class="fas fa-chart-line"></i> Our Machine Learning Models</a>
+    </nav>
+
+    <br>
+    <br>
+    <br>
+
+    <div class="container">
+        <h1> Try This Inverse Matrix Calculator!</h1>
+        <h3>Using Gauss-Jordan Elimination Method</h3>
+
+        <div id="matrix-input">
+            <label>Enter matrix size: </label>
+            <input type="number" id="matrix-size" min="2" max="5" value="3">
+            <button onclick="generateMatrixInput()">Generate Matrix</button>
+        </div>
+
+        <div id="matrix-fields"></div>
+
+        <button onclick="calculateInverse()">Calculate Inverse</button>
+
+        <h2>Inverse Matrix:</h2>
+        <div id="inverse-output" class="matrix-output"></div>
+
+        <div class="content-section">
+            <h2>About Carl Friedrich Gauss</h2>
+            <img src="https://miro.medium.com/v2/resize:fit:1200/1*KqJ8C-FebtRYoWao-3GToA.png" alt="Gauss">
+            <p>Carl Friedrich Gauss (1777-1855) was a German mathematician known for his profound contributions to number theory, statistics, analysis, differential geometry, and linear algebra.</p>
+            <p>He displayed extraordinary talent from a young age, famously correcting his father’s arithmetic at just three years old. His groundbreaking work spanned number theory, algebra, statistics, analysis, differential geometry, geophysics, and astronomy. His book Disquisitiones Arithmeticae (1801) laid the foundation for modern number theory. Gauss also made significant contributions to magnetism, optics, and astronomy, including predicting the orbit of the dwarf planet Ceres. Renowned for his precision and depth, Gauss remained dedicated to scientific rigor until his death on February 23, 1855. His legacy endures through numerous theorems, concepts, and mathematical tools bearing his name, such as the Gaussian distribution and Gauss's law.
+
+
+
+
+
+
+
+            </p>
+        
+            
+
+            <div class="math-symbols">∑ π √ ∆ λ ∫</div>
+
+            <h3>Major Contributions</h3>
+            <ul>
+                <li><strong>Number Theory:</strong> Disquisitiones Arithmeticae</li>
+                <li><strong>Statistics:</strong> Gaussian Distribution (Normal Curve)</li>
+                <li><strong>Geometry:</strong> Gaussian Curvature</li>
+                <li><strong>Linear Algebra:</strong> Gauss Elimination Method</li>
+            </ul>
+
+            <img src="data:image/png;base64,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" alt="Gaussian Distribution">
+
+            <h3>Legacy</h3>
+            <p>Known as the "Prince of Mathematicians," Gauss's work laid the foundation for many modern mathematical concepts, influencing both pure and applied sciences.</p>
+        </div>
+    </div>
+
+    <script>
+        function generateMatrixInput() {
+            const size = document.getElementById('matrix-size').value;
+            const container = document.getElementById('matrix-fields');
+            container.innerHTML = '';
+    
+            for (let i = 0; i < size; i++) {
+                const row = document.createElement('div');
+                for (let j = 0; j < size; j++) {
+                    row.innerHTML += `<input type="number" id="cell-${i}-${j}" value="0">`;
+                }
+                container.appendChild(row);
+            }
+        }
+    
+        function calculateInverse() {
+            const size = parseInt(document.getElementById('matrix-size').value);
+            const matrix = [];
+    
+            for (let i = 0; i < size; i++) {
+                matrix[i] = [];
+                for (let j = 0; j < size; j++) {
+                    matrix[i][j] = { num: parseInt(document.getElementById(`cell-${i}-${j}`).value), den: 1 };
+                }
+            }
+    
+            const inverse = gaussJordan(matrix);
+            displayInverse(inverse);
+        }
+    
+        function gaussJordan(matrix) {
+            const n = matrix.length;
+            const identity = Array.from({ length: n }, (_, i) => Array.from({ length: n }, (__, j) => ({ num: i === j ? 1 : 0, den: 1 })));
+    
+            for (let i = 0; i < n; i++) {
+                let pivot = matrix[i][i];
+                for (let j = 0; j < n; j++) {
+                    matrix[i][j] = divide(matrix[i][j], pivot);
+                    identity[i][j] = divide(identity[i][j], pivot);
+                }
+    
+                for (let k = 0; k < n; k++) {
+                    if (k !== i) {
+                        const factor = matrix[k][i];
+                        for (let j = 0; j < n; j++) {
+                            matrix[k][j] = subtract(matrix[k][j], multiply(factor, matrix[i][j]));
+                            identity[k][j] = subtract(identity[k][j], multiply(factor, identity[i][j]));
+                        }
+                    }
+                }
+            }
+    
+            return identity;
+        }
+    
+        function gcd(a, b) {
+            return b === 0 ? a : gcd(b, a % b);
+        }
+    
+        function simplify(fraction) {
+            const divisor = gcd(Math.abs(fraction.num), Math.abs(fraction.den));
+            return { num: fraction.num / divisor, den: fraction.den / divisor };
+        }
+    
+        function divide(a, b) {
+            return simplify({ num: a.num * b.den, den: a.den * b.num });
+        }
+    
+        function multiply(a, b) {
+            return simplify({ num: a.num * b.num, den: a.den * b.den });
+        }
+    
+        function subtract(a, b) {
+            const commonDen = a.den * b.den;
+            const newNum = (a.num * b.den) - (b.num * a.den);
+            return simplify({ num: newNum, den: commonDen });
+        }
+    
+        function displayInverse(inverse) {
+            const output = document.getElementById('inverse-output');
+            output.innerHTML = '';
+    
+            inverse.forEach(row => {
+                row.forEach(value => {
+                    const cell = document.createElement('div');
+                    cell.className = 'matrix-cell';
+                    if (value.den === 1) {
+                        cell.textContent = value.num;
+                    } else {
+                        cell.textContent = `${value.num}/${value.den}`;
+                    }
+                    output.appendChild(cell);
+                });
+            });
+        }
+    </script>
+    
+</body>
+
+</html>

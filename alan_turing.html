@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crack The Code</title>
+    <style>
+      body {
+        font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+          "Lucida Sans", Arial, sans-serif;
+        text-align: center;
+        padding: 50px;
+        background-color: #e6f7ff;
+        background-image: linear-gradient(#ffffff 1px, transparent 1px),
+          linear-gradient(to right, #ffffff 1px, transparent 1px);
+        background-size: 40px 40px;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      nav {
+            background-color: #476a6b;
+            color: white;
+            padding: 10px 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        nav a {
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: capitalize;
+            border-radius: 25px;
+            transition: background-color 0.3s, transform 0.3s;
+            margin: 0 40px;
+        }
+
+        nav a:hover {
+            background-color: #f39c12;
+            transform: scale(1.1);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+      button {
+        margin: 10px;
+        padding: 15px 30px;
+        font-size: 18px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        outline: none;
+      }
+      .encrypt-btn {
+        background-color: #80bfff;
+
+        button.encrypt-btn {
+          background: linear-gradient(
+            145deg,
+            #a2c2e8,
+            #80bfff
+          ); /* Soft pastel blue gradient */
+          color: white;
+          font-size: 20px;
+          padding: 18px 36px;
+          border: none;
+          border-radius: 50px; /* Rounded button */
+          cursor: pointer;
+          transition: all 0.4s ease-in-out;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+          outline: none;
+          text-transform: uppercase;
+        }
+
+        button.encrypt-btn:hover {
+          background: linear-gradient(
+            145deg,
+            #80bfff,
+            #a2c2e8
+          ); /* Gradient switch on hover */
+          transform: scale(1.1); /* Button slightly enlarges on hover */
+          box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Larger shadow on hover */
+          animation: glowEffect 1.2s ease-in-out infinite; /* Glowing effect */
+        }
+
+        button.encrypt-btn:active {
+          transform: scale(0.98); /* Slight shrink effect on click */
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Reset shadow on click */
+        }
+
+        @keyframes glowEffect {
+          0% {
+            box-shadow: 0 0 5px rgba(0, 255, 255, 0.6),
+              0 0 10px rgba(0, 255, 255, 0.5), 0 0 15px rgba(0, 255, 255, 0.4);
+          }
+          50% {
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.8),
+              0 0 20px rgba(0, 255, 255, 0.6), 0 0 30px rgba(0, 255, 255, 0.3);
+          }
+          100% {
+            box-shadow: 0 0 5px rgba(0, 255, 255, 0.6),
+              0 0 10px rgba(0, 255, 255, 0.5), 0 0 15px rgba(0, 255, 255, 0.4);
+          }
+        }
+      }
+
+      .decrypt-btn {
+        background-color: #99ccff;
+      }
+      button:hover {
+        transform: scale(1.1);
+      }
+      h1 {
+        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+        font-size: 60px;
+        font-weight: bold;
+        color: #014d72;
+        text-align: center;
+
+        letter-spacing: 2px;
+        line-height: 1.2;
+        margin: 30px 0;
+        padding: 15px 0;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        background-color: #f0f8ff;
+        border: 2px solid #005580;
+        border-radius: 15px;
+      }
+      p {
+        font-size: 20px;
+        padding: 20px;
+        max-width: 800px;
+        margin: auto;
+        text-align: left;
+      }
+      input {
+        padding: 10px;
+        font-size: 16px;
+        width: 80%;
+        margin-top: 20px;
+        display: block;
+        border: 2px solid #005580;
+        border-radius: 5px;
+      }
+      .hidden {
+        display: none;
+      }
+      .container {
+        background-color: #cceeff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        display: inline-block;
+        width: 100%;
+        max-width: 1000px;
+        text-align: center;
+        margin: auto;
+      }
+      .image-container img {
+        width: 50%; /* Decreased image width */
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Media Queries for Responsiveness */
+      @media (max-width: 768px) {
+        .image-container img {
+          width: 80%; /* Increase image width for smaller screens */
+        }
+        h1 {
+          font-size: 28px;
+        }
+        button {
+          padding: 12px 25px;
+          font-size: 16px;
+        }
+        p {
+          font-size: 18px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 24px;
+        }
+        button {
+          padding: 10px 20px;
+          font-size: 14px;
+        }
+        p {
+          font-size: 16px;
+        }
+      }
+    </style>
+    <script>
+      function toggleEncrypt() {
+        document.getElementById("encrypt-section").classList.remove("hidden");
+        document.getElementById("decrypt-section").classList.add("hidden");
+      }
+
+      function toggleDecrypt() {
+        document.getElementById("decrypt-section").classList.remove("hidden");
+        document.getElementById("encrypt-section").classList.add("hidden");
+      }
+
+      function encrypt() {
+        let input = document.getElementById("encrypt-message").value;
+        let shift = 3;
+        let encrypted = input
+          .split("")
+          .map((char) => {
+            return String.fromCharCode(char.charCodeAt(0) + shift);
+          })
+          .join("");
+        document.getElementById("encrypt-output").innerText =
+          "Encrypted Message: " + encrypted;
+      }
+
+      function decrypt() {
+        let input = document.getElementById("decrypt-message").value;
+        let shift = 3;
+        let decrypted = input
+          .split("")
+          .map((char) => {
+            return String.fromCharCode(char.charCodeAt(0) - shift);
+          })
+          .join("");
+        document.getElementById("decrypt-output").innerText =
+          "Decrypted Message: " + decrypted;
+      }
+    </script>
+  </head>
+  <body>
+    <nav>
+      <a href="index.html"><i class="fas fa-calculator"></i> Mathematicians</a>
+      <a href="ml.html"><i class="fas fa-chart-line"></i> Our Machine Learning Models</a>
+  </nav>
+    <div class="container">
+      <h1>Crack The Code</h1>
+
+      <div class="button-container">
+        <button class="encrypt-btn" onclick="toggleEncrypt()">Encrypt</button>
+        <button class="decrypt-btn" onclick="toggleDecrypt()">Decrypt</button>
+      </div>
+
+      <div id="encrypt-section" class="hidden">
+        <input
+          type="text"
+          id="encrypt-message"
+          placeholder="Enter message to encrypt"
+        />
+        <button onclick="encrypt()">Encrypt</button>
+        <p id="encrypt-output"></p>
+      </div>
+
+      <div id="decrypt-section" class="hidden">
+        <input
+          type="text"
+          id="decrypt-message"
+          placeholder="Enter message to decrypt"
+        />
+        <button onclick="decrypt()">Decrypt</button>
+        <p id="decrypt-output"></p>
+      </div>
+      <br />
+      <br />
+      <br />
+
+      <div class="image-container">
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfZZqCdAQipoIj8ZoBk-wKkiO9IQ3_Xch8_w&s"
+          alt="Alan Turing"
+        />
+      </div>
+
+      <p>
+        <br />
+        <br />
+        <br />
+        <strong>I. Alan Turing: A Biographical Overview</strong><br /><br />
+        - Nationality: British<br />
+        - Fields: Mathematics, Computer Science, Logic, Cryptanalysis,
+        Philosophy, Theoretical Biology<br />
+        - Lifespan: 1912 - 1954 (Died at 41)<br /><br />
+
+        <strong>II. Key Contributions & Achievements:</strong><br /><br />
+        <strong>A. Theoretical Computer Science:</strong><br /><br />
+        - Turing Machine: A theoretical model of computation that can simulate
+        any computer algorithm. This is foundational to computer science,
+        defining the limits of what computation is possible. It's the basis for
+        the concept of a general-purpose computer.<br />
+        - Turing Test: A test of a machine's ability to exhibit intelligent
+        behavior equivalent to, or indistinguishable from, that of a human. A
+        landmark concept in Artificial Intelligence.<br /><br />
+
+        <strong>B. Cryptanalysis (World War II):</strong><br /><br />
+        - Breaking the Enigma Code: Crucial work at Bletchley Park in
+        deciphering German Enigma-encrypted messages. Developed the "Bombe," an
+        electromechanical device that significantly sped up the decryption
+        process. This intelligence was vital to the Allied war effort.<br /><br />
+
+        <strong>C. Mathematical Biology:</strong><br /><br />
+        - Morphogenesis: Pioneering work on the mathematical theory of
+        morphogenesis, the process by which biological organisms develop their
+        shape and form. His work explored how patterns arise in nature.<br /><br />
+
+        <strong>D. Legacy and Impact:</strong><br /><br />
+        - Father of Computer Science & AI: His concepts are fundamental to these
+        fields.<br />
+        - Turing Award: The highest honor in computer science is named after
+        him.<br />
+        - Alan Turing Institute: The UK's national institute for data science
+        and artificial intelligence bears his name.<br />
+        - Posthumous Pardon: Received a posthumous pardon from the British
+        government for his conviction for homosexuality, which was illegal at
+        the time. He became a symbol of LGBTQ+ rights struggles.<br /><br />
+
+        <strong>III. The Enigma Machine & Turing's Role:</strong><br /><br />
+        - Enigma Machine: A German encryption device used during WWII. It used
+        rotors and a plugboard to create complex ciphers.<br />
+        - Challenge: The Enigma's complexity made codebreaking extremely
+        difficult.<br />
+        - Turing's Solution: He and his team at Bletchley Park developed the
+        Bombe, which automated and accelerated the process of breaking Enigma
+        codes. This gave the Allies access to vital intelligence.<br />
+        - Impact: Breaking the Enigma code is considered a major factor in
+        shortening WWII.<br />
+      </p>
+    </div>
+  </body>
+</html>

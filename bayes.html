@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bayes' Theorem Calculator & Legacy</title>
+    <style>
+        body {
+            font-family: 'Trebuchet MS', sans-serif;
+            background: linear-gradient(135deg, #e0f7fa, #90caf9);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background-color: #476a6b;
+            color: white;
+            padding: 10px 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        nav a {
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: capitalize;
+            border-radius: 25px;
+            transition: background-color 0.3s, transform 0.3s;
+            margin: 0 40px;
+        }
+
+        nav a:hover {
+            background-color: #f39c12;
+            transform: scale(1.1);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #0d47a1;
+        }
+
+        .calculator {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        label, input, button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #1565c0;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0d47a1;
+        }
+
+        .result {
+            background: #bbdefb;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        article {
+            line-height: 1.6;
+        }
+
+        .grid-bg {
+            background: linear-gradient(0deg, transparent 24%, rgba(0,0,0,0.1) 25%, rgba(0,0,0,0.1) 26%, transparent 27%, transparent 74%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.1) 76%, transparent 77%, transparent),
+                        linear-gradient(90deg, transparent 24%, rgba(0,0,0,0.1) 25%, rgba(0,0,0,0.1) 26%, transparent 27%, transparent 74%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.1) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
+        }
+
+        .bayes-image {
+            display: block;
+            margin: 0 auto 20px;
+            width: 200px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .bayes-image:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="grid-bg">
+    <nav>
+        <a href="index.html"><i class="fas fa-calculator"></i> Mathematicians</a>
+        <a href="ml.html"><i class="fas fa-chart-line"></i> Our Machine Learning Models</a>
+    </nav>
+    <br>
+    <br>
+    <br>
+    
+    
+    <div class="container">
+        <h1>Try this Bayes' Theorem Calculator!</h1>
+        <div class="calculator">
+            <label for="prior">Prior Probability (P(A)):</label>
+            <input type="number" id="prior" placeholder="Enter P(A)" step="0.01">
+
+            <label for="likelihood">Likelihood (P(B|A)):</label>
+            <input type="number" id="likelihood" placeholder="Enter P(B|A)" step="0.01">
+
+            <label for="marginal">Marginal Probability (P(B)):</label>
+            <input type="number" id="marginal" placeholder="Enter P(B)" step="0.01">
+
+            <button onclick="calculateBayes()">Calculate Posterior Probability</button>
+
+            <div class="result" id="result"></div>
+        </div>
+
+        <article>
+            <h2>Thomas Bayes: Life & Legacy</h2>
+            <img src="data:image/jpeg;base64,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" alt="Thomas Bayes" class="bayes-image">
+
+            <p>Thomas Bayes (1701-1761) was an English statistician, philosopher, and Presbyterian minister. He is best known for formulating Bayes' Theorem, which describes the probability of an event based on prior knowledge of conditions related to the event.</p>
+            <p>Bayes developed a method to calculate probabilities based on prior knowledge, which laid the foundation for what we now call Bayesian probability. His groundbreaking work, "An Essay towards solving a Problem in the Doctrine of Chances," was published posthumously in 1763 by his friend Richard Price. Interestingly, Bayes’ theorem wasn’t widely recognized during his lifetime, but over time, it became a cornerstone in fields like statistics, machine learning, and decision-making under uncertainty. Today, it's used in everything from spam filters and medical diagnosis to AI and predictive modeling.</p>
+            <h3>Contributions</h3>
+            <ul>
+                <li>Bayes' Theorem: A fundamental theorem in probability theory and statistics.</li>
+                <li>Foundations of Bayesian Inference: His work laid the groundwork for Bayesian statistics.</li>
+            </ul>
+
+            <h3>Legacy</h3>
+            <p>Bayes' Theorem has applications in various fields such as machine learning, medicine, finance, and artificial intelligence. Despite his contributions, Bayes' work was published posthumously by his friend Richard Price.</p>
+            
+            <h3>Diagram</h3>
+            <p>Bayes' Theorem Formula:</p>
+            <p style="text-align: center; font-weight: bold; font-size: 1.2em;">
+                P(A|B) = [P(B|A) * P(A)] / P(B)
+            </p>
+        </article>
+    </div>
+
+    <script>
+        function calculateBayes() {
+            const prior = parseFloat(document.getElementById('prior').value);
+            const likelihood = parseFloat(document.getElementById('likelihood').value);
+            const marginal = parseFloat(document.getElementById('marginal').value);
+            const resultDiv = document.getElementById('result');
+
+            if (isNaN(prior) || isNaN(likelihood) || isNaN(marginal) || marginal === 0) {
+                resultDiv.textContent = 'Please enter valid numbers. Marginal probability cannot be zero.';
+                return;
+            }
+
+            const posterior = (likelihood * prior) / marginal;
+            resultDiv.textContent = `Posterior Probability (P(A|B)) = ${posterior.toFixed(4)}`;
+        }
+    </script>
+</body>
+</html>
