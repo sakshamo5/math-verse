@@ -201,99 +201,110 @@
 
     <script>
         function generateMatrixInput() {
-            const size = document.getElementById('matrix-size').value;
-            const container = document.getElementById('matrix-fields');
-            container.innerHTML = '';
-    
-            for (let i = 0; i < size; i++) {
-                const row = document.createElement('div');
-                for (let j = 0; j < size; j++) {
-                    row.innerHTML += `<input type="number" id="cell-${i}-${j}" value="0">`;
-                }
-                container.appendChild(row);
-            }
+    const size = document.getElementById('matrix-size').value;
+    const container = document.getElementById('matrix-fields');
+    container.innerHTML = '';
+
+    for (let i = 0; i < size; i++) {
+        const row = document.createElement('div');
+        row.className = 'matrix-row';
+        for (let j = 0; j < size; j++) {
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.id = `cell-${i}-${j}`;
+            input.value = '0';
+            row.appendChild(input);
         }
-    
-        function calculateInverse() {
-            const size = parseInt(document.getElementById('matrix-size').value);
-            const matrix = [];
-    
-            for (let i = 0; i < size; i++) {
-                matrix[i] = [];
-                for (let j = 0; j < size; j++) {
-                    matrix[i][j] = { num: parseInt(document.getElementById(`cell-${i}-${j}`).value), den: 1 };
-                }
-            }
-    
-            const inverse = gaussJordan(matrix);
-            displayInverse(inverse);
+        container.appendChild(row);
+    }
+}
+
+function calculateInverse() {
+    const size = parseInt(document.getElementById('matrix-size').value);
+    const matrix = [];
+
+    for (let i = 0; i < size; i++) {
+        matrix[i] = [];
+        for (let j = 0; j < size; j++) {
+            matrix[i][j] = { num: parseInt(document.getElementById(`cell-${i}-${j}`).value), den: 1 };
         }
-    
-        function gaussJordan(matrix) {
-            const n = matrix.length;
-            const identity = Array.from({ length: n }, (_, i) => Array.from({ length: n }, (__, j) => ({ num: i === j ? 1 : 0, den: 1 })));
-    
-            for (let i = 0; i < n; i++) {
-                let pivot = matrix[i][i];
+    }
+
+    const inverse = gaussJordan(matrix);
+    displayInverse(inverse);
+}
+
+function gaussJordan(matrix) {
+    const n = matrix.length;
+    const identity = Array.from({ length: n }, (_, i) => Array.from({ length: n }, (__, j) => ({ num: i === j ? 1 : 0, den: 1 })));
+
+    for (let i = 0; i < n; i++) {
+        let pivot = matrix[i][i];
+        for (let j = 0; j < n; j++) {
+            matrix[i][j] = divide(matrix[i][j], pivot);
+            identity[i][j] = divide(identity[i][j], pivot);
+        }
+
+        for (let k = 0; k < n; k++) {
+            if (k !== i) {
+                const factor = matrix[k][i];
                 for (let j = 0; j < n; j++) {
-                    matrix[i][j] = divide(matrix[i][j], pivot);
-                    identity[i][j] = divide(identity[i][j], pivot);
-                }
-    
-                for (let k = 0; k < n; k++) {
-                    if (k !== i) {
-                        const factor = matrix[k][i];
-                        for (let j = 0; j < n; j++) {
-                            matrix[k][j] = subtract(matrix[k][j], multiply(factor, matrix[i][j]));
-                            identity[k][j] = subtract(identity[k][j], multiply(factor, identity[i][j]));
-                        }
-                    }
+                    matrix[k][j] = subtract(matrix[k][j], multiply(factor, matrix[i][j]));
+                    identity[k][j] = subtract(identity[k][j], multiply(factor, identity[i][j]));
                 }
             }
-    
-            return identity;
         }
-    
-        function gcd(a, b) {
-            return b === 0 ? a : gcd(b, a % b);
-        }
-    
-        function simplify(fraction) {
-            const divisor = gcd(Math.abs(fraction.num), Math.abs(fraction.den));
-            return { num: fraction.num / divisor, den: fraction.den / divisor };
-        }
-    
-        function divide(a, b) {
-            return simplify({ num: a.num * b.den, den: a.den * b.num });
-        }
-    
-        function multiply(a, b) {
-            return simplify({ num: a.num * b.num, den: a.den * b.den });
-        }
-    
-        function subtract(a, b) {
-            const commonDen = a.den * b.den;
-            const newNum = (a.num * b.den) - (b.num * a.den);
-            return simplify({ num: newNum, den: commonDen });
-        }
-    
-        function displayInverse(inverse) {
-            const output = document.getElementById('inverse-output');
-            output.innerHTML = '';
-    
-            inverse.forEach(row => {
-                row.forEach(value => {
-                    const cell = document.createElement('div');
-                    cell.className = 'matrix-cell';
-                    if (value.den === 1) {
-                        cell.textContent = value.num;
-                    } else {
-                        cell.textContent = `${value.num}/${value.den}`;
-                    }
-                    output.appendChild(cell);
-                });
-            });
-        }
+    }
+
+    return identity;
+}
+
+function gcd(a, b) {
+    return b === 0 ? a : gcd(b, a % b);
+}
+
+function simplify(fraction) {
+    const divisor = gcd(Math.abs(fraction.num), Math.abs(fraction.den));
+    return { num: fraction.num / divisor, den: fraction.den };
+}
+
+function divide(a, b) {
+    return simplify({ num: a.num * b.den, den: a.den * b.num });
+}
+
+function multiply(a, b) {
+    return simplify({ num: a.num * b.num, den: a.den * b.den });
+}
+
+function subtract(a, b) {
+    const commonDen = a.den * b.den;
+    const newNum = (a.num * b.den) - (b.num * a.den);
+    return simplify({ num: newNum, den: commonDen });
+}
+
+function displayInverse(inverse) {
+    const output = document.getElementById('inverse-output');
+    output.innerHTML = '';
+
+    inverse.forEach(row => {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'matrix-row';
+
+        row.forEach(value => {
+            const cell = document.createElement('div');
+            cell.className = 'matrix-cell';
+            if (value.den === 1) {
+                cell.textContent = value.num;
+            } else {
+                cell.textContent = `${value.num}/${value.den}`;
+            }
+            rowDiv.appendChild(cell);
+        });
+
+        output.appendChild(rowDiv);
+    });
+}
+
     </script>
     
 </body>
